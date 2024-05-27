@@ -7,13 +7,25 @@ import AboutScreen from "./screens/AboutScreen";
 import HomeScreen from "./screens/HomeScreen";
 import { ThemeProvider } from "./context/theme"
 import { Text, Switch, View, StyleSheet } from "react-native";
-import SignupScreen from "./screens/SignupScreen";
-import LoginScreen from "./screens/LoginScreen";
+import SignupScreen from "./screens/SignupScreen"; //Si funciona
+import LoginScreen from "./screens/LoginScreen"; ///Si funciona
+import JournalScreen from "./screens/JournalScreen";//Si functiona
+import DreamsScreen from "./screens/DreamsScreen";//Si functiona
+
+
+import { itim } from "@expo-google-fonts/itim";
 
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  //  const [fontsLoaded] = useFonts({
+  //   itim: require('@expo-google-fonts/itim'),
+  // });
+
+  // if (!fontsLoaded) {
+  //   return null; // or any loading indicator
+  
   return (
     <NavigationContainer>
       <ThemeProvider>
@@ -26,11 +38,10 @@ export default function App() {
                 iconName = "house-user";
               } else if (route.name === "About") {
                 iconName = "cloud";
+              }else if (route.name === "Dreams") {
+                iconName = "book";
               } else if (route.name === "Settings") {
                 iconName = "cog";
-              }
-               else if (route.name === "SignUp") {
-                iconName = "phone";
               }
               
               return <FontAwesome5 name={iconName} size={size} color={color} />;
@@ -40,8 +51,8 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="About" component={AboutScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-        <Tab.Screen name="SignUp" component={SignupScreen} />
+        <Tab.Screen name="Dreams" component={DreamsScreen} />
+        <Tab.Screen name="Settings" component={JournalScreen} />        
       </Tab.Navigator>
       </ThemeProvider>
     </NavigationContainer>

@@ -1,9 +1,17 @@
-import React from 'react';
-import { Text, View, StyleSheet, Button, Alert, TouchableOpacity, ImageBackground } from "react-native";
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Alert } from "react-native";
 import { GlobalLayout } from "../components/layout";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { itim } from "@expo-google-fonts/itim";
 
 export default function HomeScreen() {
+  const [dreamCount, setDreamCount] = useState(0);
+
+  const handleLogDream = () => {
+    setDreamCount(prevCount => prevCount + 1);
+    Alert.alert('Log Dream Button Pressed');
+  };
+
   return (
     <GlobalLayout>
       <SafeAreaView style={styles.container}>
@@ -11,24 +19,27 @@ export default function HomeScreen() {
           <Text style={styles.innerText}>Welcome to Dreamy, </Text>
           <Text style={styles.innerText}>Hope you had a good night's sleep </Text>
         </View>
-        <View style={styles.row}>
-          <Text style={styles.innerText}>Click to log your dream!!!!</Text>          
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.innerText}>Row 3</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.cloudButtonContainer}
-          onPress={() => Alert.alert('Log Dream Button Pressed')}
-        >
-          <ImageBackground
-            source={require('../assets/cloud.png')}
-            style={styles.cloudButton}
-            imageStyle={styles.cloudImage}
+        <View style={[styles.row, styles.cloudButtonRow]}>
+          <Text style={styles.innerText}>Click to log your dream!!!!</Text>
+          <TouchableOpacity
+            style={styles.cloudButtonContainer}
+            onPress={handleLogDream}
           >
-            <Text style={styles.buttonText}>Add dream</Text>
-          </ImageBackground>
-        </TouchableOpacity>
+            <ImageBackground
+              source={require('../assets/cloud.png')}
+              style={styles.cloudButton}
+              imageStyle={styles.cloudImage}
+            >
+              <Text style={styles.buttonText}>Add dream</Text>
+            </ImageBackground>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.innerText}>Dreams Logged: {dreamCount}</Text>
+          <View style={styles.progressBar}>
+            <View style={[styles.progress, { width: `${dreamCount * 10}%` }]}></View>
+          </View>
+        </View>
       </SafeAreaView>
     </GlobalLayout>
   );
@@ -45,18 +56,19 @@ const styles = StyleSheet.create({
   },
   row: {
     width: "100%", 
-     
     marginBottom: 10, // Adjust vertical spacing between rows as needed
     padding: 10, // Adjust padding inside each row as needed
   },
   innerText: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 30,   
+   
+  },
+  cloudButtonRow: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cloudButtonContainer: {
-    position: 'absolute',
-    bottom: 30,
-    right: 30,
     width: 110,
     height: 100,
   },
@@ -73,4 +85,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
   },
+  progressBar: {
+    height: 30,
+    width: '100%',
+    backgroundColor: 'gray',
+    borderRadius: 5,
+    marginTop: 5,
+  },
+  progress: {
+    height: '100%',
+    backgroundColor: '#A4C2DB',
+    borderRadius: 5,
+  },
 });
+
+
