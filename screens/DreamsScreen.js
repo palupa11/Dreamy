@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { GlobalLayout } from '../components/layout';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 export default function DreamsScreen() {
   const [dreams, setDreams] = useState([]);
@@ -31,12 +32,40 @@ export default function DreamsScreen() {
     navigation.navigate('DreamDetails', { dreamId });
   };
 
+  const deleteDream = async (dreamId) => {
+    const userId = 2; // Example userId, ensure this is dynamically set based on the logged-in user
+    try {
+      const response = await fetch(`http://10.88.11.94:3000/api/dreams/${userId}/${dreamId}`, {
+        method: 'DELETE',
+      });
+      const json = await response.json();
+      if (json.error) {
+        throw new Error(json.error);
+      }
+      setDreams(dreams.filter(dream => dream.dreamId !== dreamId));
+      alert('Dream deleted successfully');
+    } catch (error) {
+      alert('Failed to delete dream. Please try again.');
+    }
+  };
+
+  const renderHiddenItem = (data, rowMap) => (
+    <View style={styles.rowBack}>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        onPress={() => deleteDream(data.item.dreamId)}
+      >
+        <Text style={styles.backTextWhite}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <GlobalLayout>
       <SafeAreaView style={styles.container}>
         <Text style={styles.headerText}>Your Dreams</Text>
         {error && <Text style={styles.errorText}>Error: {error}</Text>}
-        <FlatList
+        <SwipeListView
           data={dreams}
           keyExtractor={(item) => item.dreamId.toString()}
           renderItem={({ item }) => (
@@ -48,6 +77,8 @@ export default function DreamsScreen() {
               </View>
             </TouchableOpacity>
           )}
+          renderHiddenItem={renderHiddenItem}
+          rightOpenValue={-75}
           ListEmptyComponent={<Text style={styles.emptyText}>No dreams logged yet.</Text>}
         />
       </SafeAreaView>
@@ -95,5 +126,31 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginTop: 20,
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#DDD',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 75,
+  },
+  backRightBtnRight: {
+    backgroundColor: 'red',
+    right: 0,
+  },
+  backTextWhite: {
+    color: '#FFF',
+    fontWeight: 'bold',
   },
 });
