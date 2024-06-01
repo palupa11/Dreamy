@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Alert } from "react-native";
+import React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import { GlobalLayout } from "../components/layout";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { itim } from "@expo-google-fonts/itim";
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
-  const [dreamCount, setDreamCount] = useState(0);
-
-  const handleLogDream = () => {
-    setDreamCount(prevCount => prevCount + 1);
-    Alert.alert('Log Dream Button Pressed');
-  };
+  const navigation = useNavigation();
 
   return (
     <GlobalLayout>
@@ -23,7 +18,7 @@ export default function HomeScreen() {
           <Text style={styles.innerText}>Click to log your dream!!!!</Text>
           <TouchableOpacity
             style={styles.cloudButtonContainer}
-            onPress={handleLogDream}
+            onPress={() => navigation.navigate('JournalScreen')}
           >
             <ImageBackground
               source={require('../assets/cloud.png')}
@@ -35,10 +30,10 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.row}>
-          <Text style={styles.innerText}>Dreams Logged: {dreamCount}</Text>
+          {/* <Text style={styles.innerText}>Dreams Logged: {dreamCount}</Text>
           <View style={styles.progressBar}>
             <View style={[styles.progress, { width: `${dreamCount * 10}%` }]}></View>
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
     </GlobalLayout>
@@ -62,7 +57,6 @@ const styles = StyleSheet.create({
   innerText: {
     color: 'white',
     fontSize: 30,   
-   
   },
   cloudButtonRow: {
     justifyContent: 'center',
@@ -98,5 +92,3 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-
-

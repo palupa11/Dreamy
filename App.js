@@ -11,9 +11,12 @@ import SignupScreen from "./screens/SignupScreen"; //Si funciona
 import LoginScreen from "./screens/LoginScreen"; ///Si funciona
 import JournalScreen from "./screens/JournalScreen";//Si functiona
 import DreamsScreen from "./screens/DreamsScreen";//Si functiona
+import HomeStack from "./components/homestack"; 
+import DreamsStack from "./components/dreamstack"; 
 
 
 import { itim } from "@expo-google-fonts/itim";
+import DreamDetails from "./screens/DreamDetails";
 
 
 const Tab = createBottomTabNavigator();
@@ -49,10 +52,12 @@ export default function App() {
           };
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={HomeStack} options={{ headerShown: false }}  />
         <Tab.Screen name="About" component={AboutScreen} />
-        <Tab.Screen name="Dreams" component={DreamsScreen} />
-        <Tab.Screen name="Settings" component={JournalScreen} />        
+       
+        <Tab.Screen name="Dreams" component={DreamsStack} options={{ headerShown: false }} /> 
+        <Tab.Screen name="Settings" component={JournalScreen} />      
+        
       </Tab.Navigator>
       </ThemeProvider>
     </NavigationContainer>

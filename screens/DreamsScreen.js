@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { GlobalLayout } from '../components/layout';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 export default function DreamsScreen() {
   const [dreams, setDreams] = useState([]);
   const [error, setError] = useState(null);
+  const navigation = useNavigation();
 
   const fetchDreams = async () => {
+    const userId = 2; // Example userId, ensure this is dynamically set based on the logged-in user
     try {
-      const response = await fetch('http://10.88.11.94:3000/api/dreams'); // Update the URL as necessary
+      const response = await fetch(`http://10.88.11.94:3000/api/dreams/${userId}`);
       const json = await response.json();
+      if (json.error) {
+        throw new Error(json.error);
+      }
       setDreams(json.dreams);
     } catch (error) {
       setError(error.toString());
@@ -21,6 +27,10 @@ export default function DreamsScreen() {
     fetchDreams();
   }, []);
 
+  const handleDreamPress = (dreamId) => {
+    navigation.navigate('DreamDetails', { dreamId });
+  };
+
   return (
     <GlobalLayout>
       <SafeAreaView style={styles.container}>
@@ -30,10 +40,13 @@ export default function DreamsScreen() {
           data={dreams}
           keyExtractor={(item) => item.dreamId.toString()}
           renderItem={({ item }) => (
-            <View style={styles.dreamItem}>
-              <Text style={styles.dreamTitle}>{item.dreamTitle}</Text>
-              <Text style={styles.dreamContent}>{item.dreamContent}</Text>
-            </View>
+            <TouchableOpacity onPress={() => handleDreamPress(item.dreamId)}>
+              <View style={styles.dreamItem}>
+                <Text style={styles.dreamTitle}>{item.dreamTitle}</Text>
+                <Text style={styles.dreamContent}>{item.dreamContent}</Text>
+                <Text style={styles.createdAt}>{item.createdAt}</Text>
+              </View>
+            </TouchableOpacity>
           )}
           ListEmptyComponent={<Text style={styles.emptyText}>No dreams logged yet.</Text>}
         />
@@ -73,6 +86,10 @@ const styles = StyleSheet.create({
   dreamContent: {
     color: 'white',
     fontSize: 16,
+  },
+  createdAt: {
+    color: 'white',
+    fontSize: 10,
   },
   emptyText: {
     color: 'white',
