@@ -1,8 +1,8 @@
 // AboutScreen.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ImageBackground } from 'react-native';
 import { GlobalLayout } from '../components/layout'; // Adjust the import path as necessary
-import * as FileSystem from 'expo-file-system';
+import licensesData from '../licenses.json'; // Adjust the import path as necessary
 
 export default function AboutScreen() {
   const [licenses, setLicenses] = useState([]);
@@ -10,9 +10,8 @@ export default function AboutScreen() {
   useEffect(() => {
     const fetchLicenses = async () => {
       try {
-        const licensesUri = FileSystem.documentDirectory + 'licenses.json';
-        const response = await fetch(licensesUri);
-        const data = await response.json();
+        // Assuming licenses.json is located in the root directory of the project and bundled with the app
+        const data = licensesData;
         setLicenses(Object.keys(data).map(key => ({ name: key, ...data[key] })));
       } catch (error) {
         console.error('Error fetching licenses:', error);
@@ -32,23 +31,47 @@ export default function AboutScreen() {
 
   return (
     <GlobalLayout>
-      <View style={styles.container}>
-        <Text style={styles.headerText}>Open Source Licenses</Text>
-        <FlatList
-          data={licenses}
-          keyExtractor={(item) => item.name}
-          renderItem={renderLicense}
-        />
-      </View>
+      <ImageBackground
+        source={require('../assets/background.png')} // Ensure this path is correct
+        style={styles.background}
+        imageStyle={styles.backgroundImage}
+      >
+        <View style={styles.container}>
+          <Text style={styles.appDescription}>
+            Dreamy is a dream journaling app designed to help you record and reflect on your dreams.
+          </Text>
+          <Text style={styles.headerText}>Open Source Licenses</Text>
+          <FlatList
+            data={licenses}
+            keyExtractor={(item) => item.name}
+            renderItem={renderLicense}
+          />
+        </View>
+      </ImageBackground>
     </GlobalLayout>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  backgroundImage: {
+    opacity: 0.8,
+  },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#21325E',
+    
+   
+  },
+  appDescription: {
+    fontSize: 16,
+    color: 'white',
+    marginBottom: 20,
+    textAlign: 'center',
+     fontWeight: 'bold',
   },
   headerText: {
     fontSize: 24,
@@ -61,6 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     borderRadius: 5,
     marginBottom: 10,
+    backgroundColor: '#617F99'
   },
   packageName: {
     color: 'white',

@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { View, StyleSheet, TextInput, Button, Image, Text } from "react-native";
 import { GlobalLayout } from '../components/layout';
@@ -25,6 +25,7 @@ export default function LogIn() {
       const result = await response.json();
       if (response.ok) {
         await AsyncStorage.setItem("token", result.token); // Use AsyncStorage for storing the token
+        navigation.navigate('Main'); // Navigate to the main screen
       } else {
         throw new Error(result.message || "Authentication failed");
       }
@@ -32,47 +33,48 @@ export default function LogIn() {
       console.error("Error logging in:", err);
     }
   };    
+
   const handleSignUp = () => {
     navigation.navigate('SignUp');  // Ensure this navigation target is correctly configured
   };
 
   return (
     <GlobalLayout>
-        <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
         <View style={styles.logoContainer}>
-            <Image
+          <Image
             source={require('../assets/logo.png')}
             style={styles.logo}
-            />
+          />
         </View>
         <Text style={styles.title}>Welcome dreamer!</Text>
         <TextInput
-            style={styles.input}
-            onChangeText={setEmail}
-            value={email}
-            placeholder="Email"
-            placeholderTextColor="white"
-            keyboardType="email-address"
+          style={styles.input}
+          onChangeText={setEmail}
+          value={email}
+          placeholder="Email"
+          placeholderTextColor="white"
+          keyboardType="email-address"
         />
         <TextInput
-            style={styles.input}
-            onChangeText={setPassword}
-            value={password}
-            placeholder="Password"
-            placeholderTextColor="white"
-            secureTextEntry={true}
+          style={styles.input}
+          onChangeText={setPassword}
+          value={password}
+          placeholder="Password"
+          placeholderTextColor="white"
+          secureTextEntry={true}
         />
         <Button
-            title="Submit"
-            onPress={handleSubmit}
+          title="Submit"
+          onPress={handleSubmit}
         />
         <Text style={styles.signupText}>Not a dreamer yet?</Text>  
         <Button
-            title="Sign Up"
-            onPress={handleSignUp}  // This button navigates to the sign-up screen
+          title="Sign Up"
+          onPress={handleSignUp}  // This button navigates to the sign-up screen
         />
-        </SafeAreaView>
+      </SafeAreaView>
     </GlobalLayout>
   );
 }

@@ -11,7 +11,7 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
 
   const handleSubmit = () => {
-    // Handle submit logic here
+   
     console.log('Email:', email);
     console.log('Name:', name);
     console.log('Password:', password);
@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: 100, // Adjust the width as needed
-    height: 100, // Adjust the height as needed
+    width: 100, 
+    height: 100, 
     resizeMode: 'contain',
   },
   title: {

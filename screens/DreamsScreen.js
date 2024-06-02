@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { GlobalLayout } from '../components/layout';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -62,35 +62,48 @@ export default function DreamsScreen() {
 
   return (
     <GlobalLayout>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.headerText}>Your Dreams</Text>
-        {error && <Text style={styles.errorText}>Error: {error}</Text>}
-        <SwipeListView
-          data={dreams}
-          keyExtractor={(item) => item.dreamId.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleDreamPress(item.dreamId)}>
-              <View style={styles.dreamItem}>
-                <Text style={styles.dreamTitle}>{item.dreamTitle}</Text>
-                <Text style={styles.dreamContent}>{item.dreamContent}</Text>
-                <Text style={styles.createdAt}>{item.createdAt}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          renderHiddenItem={renderHiddenItem}
-          rightOpenValue={-75}
-          ListEmptyComponent={<Text style={styles.emptyText}>No dreams logged yet.</Text>}
-        />
-      </SafeAreaView>
+      <ImageBackground
+        source={require('../assets/background.png')} // Ensure this path is correct
+        style={styles.background}
+        imageStyle={styles.backgroundImage}
+      >
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.headerText}>Your Dreams</Text>
+          {error && <Text style={styles.errorText}>Error: {error}</Text>}
+          <SwipeListView
+            data={dreams}
+            keyExtractor={(item) => item.dreamId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleDreamPress(item.dreamId)}>
+                <View style={styles.dreamItem}>
+                  <Text style={styles.dreamTitle}>{item.dreamTitle}</Text>
+                  <Text style={styles.dreamContent}>{item.dreamContent}</Text>
+                  <Text style={styles.createdAt}>{item.createdAt}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            renderHiddenItem={renderHiddenItem}
+            rightOpenValue={-75}
+            ListEmptyComponent={<Text style={styles.emptyText}>No dreams logged yet.</Text>}
+          />
+        </SafeAreaView>
+      </ImageBackground>
     </GlobalLayout>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  backgroundImage: {
+    // opacity: 0.8,
+  },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#21325E',
+    // backgroundColor: 'rgba(33, 50, 94, 0.8)', // Semi-transparent background to enhance text readability
   },
   headerText: {
     fontSize: 24,
@@ -105,7 +118,7 @@ const styles = StyleSheet.create({
   },
   dreamItem: {
     padding: 15,
-    backgroundColor: '#333',
+    backgroundColor: '#617F99',
     borderRadius: 5,
     marginBottom: 10,
   },
@@ -146,11 +159,11 @@ const styles = StyleSheet.create({
     width: 75,
   },
   backRightBtnRight: {
-    backgroundColor: 'red',
+    backgroundColor: '#FCC931',
     right: 0,
   },
   backTextWhite: {
-    color: '#FFF',
+    color: 'black',
     fontWeight: 'bold',
   },
 });

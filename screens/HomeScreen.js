@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Image } from "react-native";
 import { GlobalLayout } from "../components/layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
@@ -9,86 +9,83 @@ export default function HomeScreen() {
 
   return (
     <GlobalLayout>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.row}>
-          <Text style={styles.innerText}>Welcome to Dreamy, </Text>
-          <Text style={styles.innerText}>Hope you had a good night's sleep </Text>
-        </View>
-        <View style={[styles.row, styles.cloudButtonRow]}>
-          <Text style={styles.innerText}>Click to log your dream!!!!</Text>
-          <TouchableOpacity
-            style={styles.cloudButtonContainer}
-            onPress={() => navigation.navigate('JournalScreen')}
-          >
-            <ImageBackground
-              source={require('../assets/cloud.png')}
-              style={styles.cloudButton}
-              imageStyle={styles.cloudImage}
+      <ImageBackground
+        source={require('../assets/background.png')}
+        style={styles.background}
+        imageStyle={styles.backgroundImage}
+      >
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Welcome to Dreamy,
+            </Text>
+          </View>
+          <View style={styles.content}>
+            <Text style={styles.message}>
+              
+            </Text>
+            <TouchableOpacity
+              style={styles.cloudButtonContainer}
+              onPress={() => navigation.navigate('JournalScreen')}
             >
-              <Text style={styles.buttonText}>Add dream</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.row}>
-          {/* <Text style={styles.innerText}>Dreams Logged: {dreamCount}</Text>
-          <View style={styles.progressBar}>
-            <View style={[styles.progress, { width: `${dreamCount * 10}%` }]}></View>
-          </View> */}
-        </View>
-      </SafeAreaView>
+              <Image
+                source={require('../assets/cloud.png')} 
+                style={styles.cloudButton}
+              />
+              <Text style={styles.buttonText}>Add Dream</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </ImageBackground>
     </GlobalLayout>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  backgroundImage: {
+    opacity: 0.8,
+  },
   container: {
     flex: 1,
-    flexDirection: "column", // Vertical layout
-    justifyContent: "space-between", // Distribute rows evenly along the vertical axis
-    alignItems: "center", // Center items horizontally
-    paddingHorizontal: 4, // Adjust as needed
-    paddingVertical: 10, // Adjust as needed
+    padding: 20,
   },
-  row: {
-    width: "100%", 
-    marginBottom: 10, // Adjust vertical spacing between rows as needed
-    padding: 10, // Adjust padding inside each row as needed
-  },
-  innerText: {
-    color: 'white',
-    fontSize: 30,   
-  },
-  cloudButtonRow: {
+  header: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
   },
-  cloudButtonContainer: {
-    width: 110,
-    height: 100,
+  title: {
+    fontSize: 28,
+    color: 'white',
+    fontWeight: 'bold',
   },
-  cloudButton: {
+  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cloudImage: {
+  message: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  cloudButtonContainer: {
+    alignItems: 'center',
+  },
+  cloudButton: {
+    width: 110,
+    height: 100,
     resizeMode: 'contain',
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 16,
     textAlign: 'center',
-  },
-  progressBar: {
-    height: 30,
-    width: '100%',
-    backgroundColor: 'gray',
-    borderRadius: 5,
-    marginTop: 5,
-  },
-  progress: {
-    height: '100%',
-    backgroundColor: '#A4C2DB',
-    borderRadius: 5,
   },
 });
