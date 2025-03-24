@@ -5,9 +5,9 @@ Welcome to Dreamy,your personal dream journal. The purpose of this app is for yo
 ## Features
 
 - Home: Add your dreams to the journal
-- About: An brief introduction to Dreamy and .
-- Dreams: Here you will see your dream journal. You can edit them or delete them as well.
-- Settings: Change the font size of the app.
+- About: An brief introduction to Dreamy.
+- Dreams: Here you'll find your dream journal. You can edit them or delete them as well.
+- Settings: App customization.
 
 ## Dependencies
 
